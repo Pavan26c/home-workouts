@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>5-Day Home Workout</title>
+<style>
+:root{--bg:#faf7f5;--card:#fff;--text:#2b2326;--muted:#6f6468;--accent:#c2410c;--line:#eadfdb;--done:#15803d;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1517;--card:#262022;--text:#f3ecee;--muted:#a99da1;--accent:#fb923c;--line:#3a3135;--done:#4ade80}}
+:root[data-theme="dark"]{--bg:#1a1517;--card:#262022;--text:#f3ecee;--muted:#a99da1;--accent:#fb923c;--line:#3a3135;--done:#4ade80}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.4}
+main{max-width:560px;margin:0 auto;padding:16px 16px 40px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px}
+.tabs button{flex:1 0 auto;min-height:44px;padding:0 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--text);font-weight:650;font-size:.95rem}
+.tabs button.cur{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+h1{font-size:1.4rem;margin:0 0 4px}
+.sub{color:var(--muted);font-size:.9rem;margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.card.done{border-color:var(--done)}
+.top{display:flex;gap:10px;align-items:baseline}
+.num{background:var(--accent);color:var(--bg);border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex:none}
+.name{font-weight:650;font-size:1.05rem}
+.detail{color:var(--muted);font-size:.9rem;margin:4px 0 10px 36px}
+.big{margin:0 0 10px 36px;font-size:1.15rem;font-weight:700;color:var(--accent)}
+.sets{display:flex;gap:8px;margin:0 0 12px 36px}
+.sets button{flex:1;min-height:44px;border-radius:10px;border:1.5px solid var(--line);background:transparent;color:var(--text);font-size:.95rem;font-weight:600}
+.sets button.on{background:var(--done);border-color:var(--done);color:var(--bg)}
+.row{display:flex;gap:8px;align-items:center;margin-left:36px;flex-wrap:wrap}
+a.watch{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent);color:var(--bg);text-decoration:none;font-weight:650;font-size:.9rem}
+.link{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:.85rem}
+.edit{display:flex;gap:6px;margin:10px 0 0 36px}
+.edit input{flex:1;min-width:0;padding:9px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--text);font-size:.9rem}
+.edit button{padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text)}
+.foot{color:var(--muted);font-size:.85rem;margin-top:14px}
+#reset{margin-top:8px;padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--text)}
+.daybtn{display:block;width:100%;text-align:left;margin-bottom:10px;padding:16px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--text)}
+.daybtn.done{border-color:var(--done)}
+.daybtn .dn{font-size:1.15rem;font-weight:700}
+.daybtn .ds{color:var(--muted);font-size:.9rem;margin-top:2px}
+.daybtn .dp{color:var(--accent);font-size:.85rem;font-weight:650;margin-top:6px}
+.daybtn.done .dp{color:var(--done)}
+.back{margin-bottom:12px;min-height:44px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--text);font-weight:650}
+</style>
+</head>
+<body>
+<main>
+<div id="home"></div>
+<div id="work">
+<button class="back" id="back">← All days</button>
+<h1 id="title"></h1>
+<p class="sub" id="sub"></p>
+<div id="list"></div>
+<p class="foot"><span id="prog"></span><br>Warm-up 5 min first: arm circles, hip circles, bodyweight squats, cat-cow. Rest 45–60 sec between sets. Lower slowly (3 sec) on every rep.</p>
+<button id="reset">Reset this day</button>
+</div>
+</main>
+<script>
+var days=[
+{tab:"Monday",title:"Monday: Lower body",sub:"Quads and glutes",ex:[
+ {n:"Goblet squat",d:"Hold a 3 kg plate at your chest",s:3,r:"15 reps",v:"https://www.youtube.com/shorts/yTDROg8zZsU"},
+ {n:"Reverse lunge",d:"2 kg dumbbells, one in each hand",s:3,r:"12 reps per leg",v:"https://www.youtube.com/shorts/i3TNJmnInI0"},
+ {n:"Glute bridge",d:"Plate resting on your hips",s:3,r:"15 reps",v:"https://www.youtube.com/shorts/iOrJXNUH3to"},
+ {n:"Single-leg calf raise",d:"Hold a wall or chair for balance",s:3,r:"15 reps per leg",v:"https://youtu.be/qPd73snQfUs"}]},
+{tab:"Tuesday",title:"Tuesday: Upper body",sub:"Chest, back and shoulders",ex:[
+ {n:"Incline push-up",d:"Hands on a table or counter",s:3,r:"8–12 reps"},
+ {n:"Bent-over dumbbell row",d:"2 kg dumbbells, flat back",s:3,r:"15 reps"},
+ {n:"Overhead press",d:"2 kg dumbbells",s:3,r:"15 reps"},
+ {n:"Lateral raise",d:"2 kg dumbbells, soft elbows",s:2,r:"15 reps"}]},
+{tab:"Wednesday",title:"Wednesday: Core and posture",sub:"Core, upper back and balance",ex:[
+ {n:"Plank",d:"Forearms down, body in a straight line",s:3,r:"30–45 sec"},
+ {n:"Dead bug",d:"Lower back pressed into the floor",s:3,r:"10 reps per side"},
+ {n:"Bird dog",d:"Move slowly, hips level",s:3,r:"10 reps per side"},
+ {n:"Bent-over reverse fly",d:"2 kg dumbbells",s:3,r:"15 reps"},
+ {n:"Side plank",d:"Knees down if needed",s:2,r:"20–30 sec per side"}]},
+{tab:"Thursday",title:"Thursday: Lower body",sub:"Hinge and glutes",ex:[
+ {n:"Romanian deadlift",d:"Dumbbells or plates held in hand",s:3,r:"15 reps"},
+ {n:"Step-up",d:"Sturdy step, hold dumbbells if easy",s:3,r:"10 reps per leg"},
+ {n:"Single-leg glute bridge",d:"One foot planted, other leg raised",s:3,r:"12 reps per leg"},
+ {n:"Wall sit",d:"Back flat on the wall, thighs parallel",s:2,r:"30–45 sec"}]},
+{tab:"Friday",title:"Friday: Full body and arms",sub:"Total body and arms",ex:[
+ {n:"Squat-to-press",d:"2 kg dumbbells",s:3,r:"12 reps"},
+ {n:"Biceps curl",d:"2 kg dumbbells, no swinging",s:3,r:"15 reps"},
+ {n:"Overhead triceps extension",d:"3 kg plate held with both hands",s:3,r:"15 reps"},
+ {n:"Farmer carry",d:"Dumbbells or plates, walk around the house",s:3,r:"40 sec"}]}
+];
+function sget(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function sset(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function sdel(k){try{localStorage.removeItem(k)}catch(e){}}
+var cur=0,editing=null,sets={},showHome=true;
+function renderHome(h){
+ h.innerHTML="";
+ var t=document.createElement("h1");t.textContent="Weekly workout";h.appendChild(t);
+ var s=document.createElement("p");s.className="sub";s.textContent="Pick a day to start";h.appendChild(s);
+ days.forEach(function(d,i){
+  var n=0;d.ex.forEach(function(e,j){if(getSets(i,j,e.s).every(Boolean))n++});
+  var all=n===d.ex.length;
+  var b=document.createElement("button");b.className="daybtn"+(all?" done":"");
+  var a=document.createElement("div");a.className="dn";a.textContent=d.tab;
+  var c=document.createElement("div");c.className="ds";c.textContent=d.title.split(": ")[1]+" · "+d.sub;
+  var p=document.createElement("div");p.className="dp";p.textContent=all?"✓ Complete":n+" of "+d.ex.length+" exercises done";
+  b.appendChild(a);b.appendChild(c);b.appendChild(p);
+  b.onclick=function(){cur=i;editing=null;showHome=false;render();window.scrollTo(0,0)};
+  h.appendChild(b);
+ });
+}
+function getSets(di,ei,n){
+ var k="s"+di+"-"+ei;
+ if(!sets[k]){var a=null;try{a=JSON.parse(sget(k))}catch(e){}
+  sets[k]=(a&&a.length===n)?a:Array(n).fill(false)}
+ return sets[k];
+}
+function save(di,ei){sset("s"+di+"-"+ei,JSON.stringify(sets["s"+di+"-"+ei]))}
+function isDone(di){return days[di].ex.every(function(e,i){return getSets(di,i,e.s).every(Boolean)})}
+function render(){
+ var D=days[cur],home=document.getElementById("home"),work=document.getElementById("work"),list=document.getElementById("list");
+ home.style.display=showHome?"block":"none";work.style.display=showHome?"none":"block";
+ if(showHome){renderHome(home);return}
+ document.getElementById("title").textContent=D.title;
+ document.getElementById("sub").textContent=D.sub;
+ list.innerHTML="";
+ var doneCount=0;
+ D.ex.forEach(function(e,i){
+  var st=getSets(cur,i,e.s),all=st.every(Boolean);
+  if(all)doneCount++;
+  var c=document.createElement("div");
+  c.className="card"+(all?" done":"");
+  var top=document.createElement("div");top.className="top";
+  var num=document.createElement("span");num.className="num";num.textContent=i+1;
+  var nm=document.createElement("span");nm.className="name";nm.textContent=e.n;
+  top.appendChild(num);top.appendChild(nm);c.appendChild(top);
+  var dt=document.createElement("div");dt.className="detail";dt.textContent=e.d;c.appendChild(dt);
+  var big=document.createElement("div");big.className="big";big.textContent=e.s+" sets × "+e.r;c.appendChild(big);
+  var sw=document.createElement("div");sw.className="sets";
+  st.forEach(function(on,j){
+   var b=document.createElement("button");
+   b.textContent="Set "+(j+1);b.className=on?"on":"";
+   b.onclick=function(){st[j]=!st[j];save(cur,i);render()};
+   sw.appendChild(b);
+  });
+  c.appendChild(sw);
+  var lk="l"+cur+"-"+i,mine=sget(lk),url=mine||e.v;
+  var row=document.createElement("div");row.className="row";
+  var a=document.createElement("a");a.className="watch";a.target="_blank";a.rel="noopener";
+  if(url){a.href=url;a.textContent="▶ Watch demo"}
+  else{a.href="https://www.youtube.com/results?search_query="+encodeURIComponent(e.n+" form dumbbell");a.textContent="🔍 Find demo"}
+  row.appendChild(a);
+  var eb=document.createElement("button");eb.className="link";eb.textContent=url?"Change link":"Add my link";
+  eb.onclick=function(){editing=(editing===lk)?null:lk;render()};
+  row.appendChild(eb);c.appendChild(row);
+  if(editing===lk){
+   var ed=document.createElement("div");ed.className="edit";
+   var inp=document.createElement("input");inp.type="url";inp.placeholder="Paste YouTube link";inp.value=mine||"";
+   var sv=document.createElement("button");sv.textContent="Save";
+   sv.onclick=function(){var v=inp.value.trim();if(v)sset(lk,v);else sdel(lk);editing=null;render()};
+   ed.appendChild(inp);ed.appendChild(sv);c.appendChild(ed);
+  }
+  list.appendChild(c);
+ });
+ document.getElementById("prog").textContent=doneCount+" of "+D.ex.length+" exercises done";
+}
+document.getElementById("back").onclick=function(){showHome=true;editing=null;render();window.scrollTo(0,0)};
+document.getElementById("reset").onclick=function(){
+ days[cur].ex.forEach(function(e,i){sets["s"+cur+"-"+i]=Array(e.s).fill(false);save(cur,i)});render();
+};
+render();
+</script>
+</body>
+</html>
